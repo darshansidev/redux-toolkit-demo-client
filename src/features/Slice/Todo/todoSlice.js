@@ -7,6 +7,7 @@ const initialState = {
     loading: false,
     error: null,
     todo: null,
+    singleTodo: null
 };
 
 // Define the base URL for the backend API
@@ -32,6 +33,16 @@ export const fetchTodoList = createAsyncThunk('/get-todo-list', async () => {
     }
 });
 
+export const fetchTodoById = createAsyncThunk('/get-todo-item/:id', async (todoId) => {
+    try {
+        const response = await axios.get(`${baseURL}/get-todo-item/${todoId}`);
+        console.log("response.data.dataresponse.data.dataresponse.data.data", response.data.data)
+        return response.data.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+});
+
 export const fetchAllTodoList = createAsyncThunk('/get-All-todo-list', async () => {
     try {
         const response = await axios.get(`${baseURL}/get-All-todo-list`);
@@ -41,9 +52,13 @@ export const fetchAllTodoList = createAsyncThunk('/get-All-todo-list', async () 
     }
 });
 
-export const updateTodoList = createAsyncThunk('/get-todo-list', async () => {
+export const updateTodoList = createAsyncThunk('/update-todo-list/todoId', async (todoPayload) => {
+    console.log(todoPayload, "***************************payload*******************");
     try {
-        const response = await axios.get(`${baseURL}/get-todo-list`);
+        const response = await axios.put(`${baseURL}/update-todo-list/${todoPayload.todoId}`, {
+            title: todoPayload.title,
+            description: todoPayload.description
+        });
         return response.data;
     } catch (error) {
         throw error.response.data;
@@ -102,18 +117,30 @@ const todoSlice = createSlice({
                 state.loading = false;
                 state.error = action.error.message;
             })
-            .addCase(deleteTodoList.pending, (state) => {
+            .addCase(fetchTodoById.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(deleteTodoList.fulfilled, (state, action) => {
+            .addCase(fetchTodoById.fulfilled, (state, action) => {
                 state.loading = false;
-                state.todo = action.payload;
+                state.singleTodo = action.payload;
             })
-            .addCase(deleteTodoList.rejected, (state, action) => {
+            .addCase(fetchTodoById.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })
+        // .addCase(deleteTodoList.pending, (state) => {
+        //     state.loading = true;
+        //     state.error = null;
+        // })
+        // .addCase(deleteTodoList.fulfilled, (state, action) => {
+        //     state.loading = false;
+        //     state.todo = action.payload;
+        // })
+        // .addCase(deleteTodoList.rejected, (state, action) => {
+        //     state.loading = false;
+        //     state.error = action.error.message;
+        // })
 
     },
 });

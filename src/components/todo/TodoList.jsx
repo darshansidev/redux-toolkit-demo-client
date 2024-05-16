@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { addTodo, deleteTodoList, fetchTodoList } from '../../features/Slice/Todo/todoSlice';
+import { addTodo, deleteTodoList, fetchTodoById, fetchTodoList } from '../../features/Slice/Todo/todoSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -107,9 +107,8 @@ const TodoList = () => {
     }
 
     const handleUpdate = async (todoId) => {
-
         // dispatch(fetchTodoById(todoId));
-        // navigate(`/todo/item/${todoId}`);
+        navigate(`/todo/item/${todoId}`);
     }
 
 
@@ -186,8 +185,8 @@ const TodoList = () => {
                                     <TableCell>{todo.title}</TableCell>
                                     <TableCell>{todo.description}</TableCell>
                                     <TableCell >
-                                        <Button variant="outlined" color="secondary" style={{ marginRight: "20px" }}>Update</Button>
-                                        <Button variant="outlined" color="error" onClick={() => handledelete(index._id)}> Delete </Button>
+                                        <Button variant="outlined" color="secondary" onClick={() => handleUpdate(todo._id)} style={{ marginRight: "20px" }}>Update</Button>
+                                        <Button variant="outlined" color="error" onClick={() => handledelete(todo._id)}> Delete </Button>
                                     </TableCell>
                                 </TableRow>
                             )

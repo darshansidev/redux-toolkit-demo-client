@@ -14,7 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<TodoList />} />
           <Route path="/todo-history" element={<TodoHistory />} />
-          <Route path="/update-todo/:todoId" element={<TodoUpdate />} />
+          <Route path="/todo/item/:todoId" element={<TodoUpdate />} />
         </Routes>
       </BrowserRouter>
     </div>
